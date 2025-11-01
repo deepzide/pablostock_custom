@@ -7,4 +7,20 @@ from frappe.model.document import Document
 class PickingOrder(Document):
 	def before_insert(self):
 		if self.is_new():
-			self.db_set("status", "Pending")
+			self.status = "Pending"
+			
+	@frappe.whitelist()
+	def status_in_process(self):
+		self.status = "In Process"
+		self.save()
+    
+	@frappe.whitelist()
+	def status_complete(self):
+		self.status = "Completed"
+		self.save()
+		
+	@frappe.whitelist()
+	def status_dispatched(self):
+		self.status = "Dispatched"
+		self.save()	
+	
