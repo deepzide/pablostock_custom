@@ -1,7 +1,5 @@
 # Copyright (c) 2025, Frank and contributors
 # For license information, please see license.txt
-# Copyright (c) 2025, Frank and contributors
-# For license information, please see license.txt
 
 import frappe
 
@@ -26,14 +24,18 @@ def execute(filters=None):
 
     conditions = []
 
-    if filters.get("posting_date"):
-        from_date, to_date = filters.get("posting_date")
-        if not to_date:
-            to_date = from_date
-        filters["from_date"] = from_date
-        filters["to_date"] = to_date
-        conditions.append("se.posting_date BETWEEN %(from_date)s AND %(to_date)s")
+    # Filtro Day
+    if filters.get("filter_based_on") == "Day" and filters.get("day"):
+        conditions.append("se.posting_date = %(day)s")
 
+    # Filtro Date Range
+    elif filters.get("filter_based_on") == "Date Range":
+        from_date = filters.get("from_date")
+        to_date = filters.get("to_date")
+        if from_date and to_date:
+            conditions.append("se.posting_date BETWEEN %(from_date)s AND %(to_date)s")
+
+    # Otros filtros opcionales
     if filters.get("stock_entry_type"):
         conditions.append("se.stock_entry_type = %(stock_entry_type)s")
     if filters.get("item_code"):
@@ -73,5 +75,5 @@ def execute(filters=None):
         LIMIT 1000
     """
 
-    data = frappe.db.sql(query, filters, as_dict=1)
+    data = frappe.db.sql(query, filters, as_dict=True)
     return columns, data
