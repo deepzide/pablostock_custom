@@ -23,19 +23,13 @@ def execute(filters=None):
     ]
 
     conditions = []
-
-    # Filtro Day
     if filters.get("filter_based_on") == "Day" and filters.get("day"):
         conditions.append("se.posting_date = %(day)s")
-
-    # Filtro Date Range
     elif filters.get("filter_based_on") == "Date Range":
         from_date = filters.get("from_date")
         to_date = filters.get("to_date")
         if from_date and to_date:
             conditions.append("se.posting_date BETWEEN %(from_date)s AND %(to_date)s")
-
-    # Otros filtros opcionales
     if filters.get("stock_entry_type"):
         conditions.append("se.stock_entry_type = %(stock_entry_type)s")
     if filters.get("item_code"):
