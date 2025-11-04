@@ -16,8 +16,9 @@
  "fields": [
   {
    "fieldname": "order_number",
-   "fieldtype": "Int",
-   "label": "Order Number"
+   "fieldtype": "Link",
+   "label": "Order Number",
+   "options": "Sales Order"
   },
   {
    "fieldname": "workshop",
@@ -47,14 +48,15 @@
   {
    "fieldname": "status",
    "fieldtype": "Select",
+   "hidden": 1,
    "label": "State",
-   "options": "\nPending\nIn Process\nComplete\nDispatched"
+   "options": "\nPending\nIn Process\nCompleted\nDispatched"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-31 09:11:38.333206",
+ "modified": "2025-11-01 10:20:50.510183",
  "modified_by": "Administrator",
  "module": "Pablo Stock",
  "name": "Picking Order",
