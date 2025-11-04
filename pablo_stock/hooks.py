@@ -26,7 +26,14 @@ app_license = "mit"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/pablo_stock/css/pablo_stock.css"
-# app_include_js = "/assets/pablo_stock/js/pablo_stock.js"
+app_include_js = [
+    "/assets/pablo_stock/js/stock_entry_custom.js"
+]
+doc_events = {
+    "Stock Entry": {
+        "before_submit": "pablo_stock.stock.stock_entry.validate_negative_stock"
+    }
+}
 
 # include js, css files in header of web template
 # web_include_css = "/assets/pablo_stock/css/pablo_stock.css"
