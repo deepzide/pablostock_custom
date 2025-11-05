@@ -175,7 +175,10 @@ doc_events = {
 
 # Testing
 # -------
-
+after_migrate = [
+    "pablo_stock.migrate.after_migrate",
+    
+]
 # before_tests = "pablo_stock.install.before_tests"
 
 # Overriding Methods
