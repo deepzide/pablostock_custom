@@ -7,11 +7,10 @@
  "field_order": [
   "order_number",
   "workshop",
-  "ubications",
-  "amount",
   "pieces",
-  "origin",
-  "status"
+  "status",
+  "items_picking",
+  "sales_by_woocomerce"
  ],
  "fields": [
   {
@@ -26,24 +25,9 @@
    "label": "Workshop"
   },
   {
-   "fieldname": "ubications",
-   "fieldtype": "Data",
-   "label": "Ubications"
-  },
-  {
    "fieldname": "pieces",
    "fieldtype": "Data",
    "label": "Pieces"
-  },
-  {
-   "fieldname": "amount",
-   "fieldtype": "Int",
-   "label": "Amount"
-  },
-  {
-   "fieldname": "origin",
-   "fieldtype": "Data",
-   "label": "Origin"
   },
   {
    "fieldname": "status",
@@ -51,12 +35,26 @@
    "hidden": 1,
    "label": "State",
    "options": "\nPending\nIn Process\nCompleted\nDispatched"
+  },
+  {
+   "fieldname": "items_picking",
+   "fieldtype": "Table",
+   "label": "Items Picking",
+   "options": "Items Picking",
+   "read_only_depends_on": "eval:doc.sales_by_woocomerce ===1\r\n"
+  },
+  {
+   "default": "0",
+   "fieldname": "sales_by_woocomerce",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Sales By Woocomerce"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-11-01 10:20:50.510183",
+ "modified": "2025-11-05 05:23:14.728034",
  "modified_by": "Administrator",
  "module": "Pablo Stock",
  "name": "Picking Order",
