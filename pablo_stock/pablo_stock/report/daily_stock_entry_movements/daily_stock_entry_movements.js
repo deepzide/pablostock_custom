@@ -97,7 +97,7 @@ frappe.query_reports["Daily Stock Entry Movements"] = {
       "fieldname": "stock_entry_type",
       "label": __("Stock Entry Type"),
       "fieldtype": "Select",
-      "options": "\nMaterial Receipt\nMaterial Issue\nMaterial Transfer\nRepack\nManufacture",
+      "options": "\nMaterial Receipt\nMaterial Issue\nMaterial Transfer",
     },
   ],
 
