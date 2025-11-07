@@ -1,0 +1,81 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-10-31 08:32:59.756102",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "order_number",
+  "workshop",
+  "pieces",
+  "status",
+  "items_picking",
+  "sales_by_woocomerce"
+ ],
+ "fields": [
+  {
+   "fieldname": "order_number",
+   "fieldtype": "Link",
+   "label": "Order Number",
+   "options": "Sales Order"
+  },
+  {
+   "fieldname": "workshop",
+   "fieldtype": "Data",
+   "label": "Workshop"
+  },
+  {
+   "fieldname": "pieces",
+   "fieldtype": "Data",
+   "label": "Pieces"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "State",
+   "options": "\nPending\nIn Process\nCompleted\nDispatched"
+  },
+  {
+   "fieldname": "items_picking",
+   "fieldtype": "Table",
+   "label": "Items Picking",
+   "options": "Items Picking",
+   "read_only_depends_on": "eval:doc.sales_by_woocomerce ===1\r\n"
+  },
+  {
+   "default": "0",
+   "fieldname": "sales_by_woocomerce",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Sales By Woocomerce"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-11-05 05:23:14.728034",
+ "modified_by": "Administrator",
+ "module": "Pablo Stock",
+ "name": "Picking Order",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
