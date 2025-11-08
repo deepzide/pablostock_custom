@@ -80,6 +80,7 @@ def add_items():
         aplica = row[headers_dict.get("Meta: aplica")]
         #deposito = row[headers_dict.get("Meta: deposito")]
         precio_normal = row[headers_dict.get("Precio normal")] or 0
+        precio_rebajado = row[headers_dict.get("Precio rebajado")] or 0
         publicado = row[headers_dict.get("Publicado")]
         marca = None
         if "Meta: marca" in headers_dict:
@@ -106,6 +107,7 @@ def add_items():
             "custom_origin": origen,
             "custom_item_model": modelo,
             "custom_applies": aplica,
+            "custom_discounted_pr": precio_rebajado,
             #"custom_warehouse": deposito,
             "brand": brand_doc,
         })
