@@ -82,6 +82,46 @@ def create_user(role_name, role_name_lower, role_email, company):
 def create_manager_role(role_name, role_name_lower):
 	perm_dict = [
 		{
+			"parent": "Stock Settings",
+			"permlevel": 0,
+			"select": 1,
+			"read": 1,
+			"write": 0,
+			"create": 0,
+			"submit": 0,
+			"cancel": 0,
+			"delete": 0,
+			"amend": 0,
+			"report": 0,
+			"export": 1,
+			"import": 0,
+			"share": 0,
+			"print": 0,
+			"email": 1,
+			"if_owner": 0,
+			"set_user_permissions": 0
+		},
+		{
+			"parent": "Warehouse",
+			"permlevel": 0,
+			"select": 1,
+			"read": 1,
+			"write": 0,
+			"create": 0,
+			"submit": 0,
+			"cancel": 0,
+			"delete": 0,
+			"amend": 0,
+			"report": 0,
+			"export": 1,
+			"import": 0,
+			"share": 0,
+			"print": 0,
+			"email": 1,
+			"if_owner": 0,
+			"set_user_permissions": 0
+		},
+		{
 			"parent": "User",
 			"permlevel": 0,
 			"select": 1,
@@ -106,7 +146,7 @@ def create_manager_role(role_name, role_name_lower):
 			"permlevel": 0,
 			"select": 1,
 			"read": 1,
-			"write": 1,
+			"write": 0,
 			"create": 0,
 			"submit": 0,
 			"cancel": 0,
@@ -127,17 +167,37 @@ def create_manager_role(role_name, role_name_lower):
 			"select": 1,
 			"read": 1,
 			"write": 1,
+			"create": 1,
+			"submit": 0,
+			"cancel": 0,
+			"delete": 1,
+			"amend": 0,
+			"report": 1,
+			"export": 1,
+			"import": 0,
+			"share": 0,
+			"print": 0,
+			"email": 1,
+			"if_owner": 0,
+			"set_user_permissions": 0
+		},
+		{
+			"parent": "Stock Entry Type",
+			"permlevel": 0,
+			"select": 1,
+			"read": 1,
+			"write": 0,
 			"create": 0,
 			"submit": 0,
 			"cancel": 0,
 			"delete": 0,
 			"amend": 0,
-			"report": 1,
-			"export": 0,
+			"report": 0,
+			"export": 1,
 			"import": 0,
 			"share": 0,
 			"print": 0,
-			"email": 0,
+			"email": 1,
 			"if_owner": 0,
 			"set_user_permissions": 0
 		},
@@ -158,6 +218,26 @@ def create_manager_role(role_name, role_name_lower):
 			"share": 0,
 			"print": 0,
 			"email": 1,
+			"if_owner": 0,
+			"set_user_permissions": 0
+		},
+		{
+			"parent": "Sales Order",
+			"permlevel": 0,
+			"select": 1,
+			"read": 1,
+			"write": 0,
+			"create": 0,
+			"submit": 0,
+			"cancel": 0,
+			"delete": 0,
+			"amend": 0,
+			"report": 1,
+			"export": 0,
+			"import": 0,
+			"share": 0,
+			"print": 0,
+			"email": 0,
 			"if_owner": 0,
 			"set_user_permissions": 0
 		},
@@ -216,22 +296,82 @@ def create_role_json(role_name, perm_dict, role_name_lower):
 def create_operator_role(role_name, role_name_lower):
 	perm_dict = [
 		{
-			"parent": "Item",
+			"parent": "Stock Settings",
 			"permlevel": 0,
 			"select": 1,
 			"read": 1,
-			"write": 1,
+			"write": 0,
 			"create": 0,
 			"submit": 0,
 			"cancel": 0,
 			"delete": 0,
 			"amend": 0,
-			"report": 1,
-			"export": 0,
+			"report": 0,
+			"export": 1,
 			"import": 0,
 			"share": 0,
 			"print": 0,
-			"email": 0,
+			"email": 1,
+			"if_owner": 0,
+			"set_user_permissions": 0
+		},
+		{
+			"parent": "Stock Entry Type",
+			"permlevel": 0,
+			"select": 1,
+			"read": 1,
+			"write": 0,
+			"create": 0,
+			"submit": 0,
+			"cancel": 0,
+			"delete": 0,
+			"amend": 0,
+			"report": 0,
+			"export": 1,
+			"import": 0,
+			"share": 0,
+			"print": 0,
+			"email": 1,
+			"if_owner": 0,
+			"set_user_permissions": 0
+		},
+		{
+			"parent": "Warehouse",
+			"permlevel": 0,
+			"select": 1,
+			"read": 1,
+			"write": 0,
+			"create": 0,
+			"submit": 0,
+			"cancel": 0,
+			"delete": 0,
+			"amend": 0,
+			"report": 0,
+			"export": 1,
+			"import": 0,
+			"share": 0,
+			"print": 0,
+			"email": 1,
+			"if_owner": 0,
+			"set_user_permissions": 0
+		},
+		{
+			"parent": "Item",
+			"permlevel": 0,
+			"select": 1,
+			"read": 1,
+			"write": 1,
+			"create": 1,
+			"submit": 0,
+			"cancel": 0,
+			"delete": 1,
+			"amend": 0,
+			"report": 1,
+			"export": 1,
+			"import": 0,
+			"share": 0,
+			"print": 0,
+			"email": 1,
 			"if_owner": 0,
 			"set_user_permissions": 0
 		},
@@ -274,6 +414,46 @@ def create_operator_role(role_name, role_name_lower):
 			"email": 1,
 			"if_owner": 0,
 			"set_user_permissions": 0
+		},
+		{
+			"parent": "Sales Order",
+			"permlevel": 0,
+			"select": 1,
+			"read": 1,
+			"write": 0,
+			"create": 0,
+			"submit": 0,
+			"cancel": 0,
+			"delete": 0,
+			"amend": 0,
+			"report": 1,
+			"export": 0,
+			"import": 0,
+			"share": 0,
+			"print": 0,
+			"email": 0,
+			"if_owner": 0,
+			"set_user_permissions": 0
+		},
+		{
+			"parent": "Company",
+			"permlevel": 0,
+			"select": 1,
+			"read": 1,
+			"write": 0,
+			"create": 0,
+			"submit": 0,
+			"cancel": 0,
+			"delete": 0,
+			"amend": 0,
+			"report": 1,
+			"export": 1,
+			"import": 0,
+			"share": 0,
+			"print": 0,
+			"email": 1,
+			"if_owner": 0,
+			"set_user_permissions": 0
 		}
 	]
 
@@ -298,8 +478,8 @@ def has_permission(doc, user=None, permission_type=None):
 	if any(role in roles for role in allowed_roles):
 		return True
 
-	if doc.company_name == workshop:
-		return True
+	if f'Administrador {workshop}' in roles:
+		return doc.company_name == workshop
 
 	return False
 
@@ -322,7 +502,7 @@ def get_permission_query_conditions(user=None):
 	if any(role in roles for role in allowed_roles):
 		return None
 
-	if workshop:
+	if f'Administrador {workshop}' in roles:
 		return f"`tabCompany`.`company_name` = '{workshop}'"
 
 	return None

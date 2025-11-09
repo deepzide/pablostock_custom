@@ -14,13 +14,13 @@ def has_permission(doc, user=None, permission_type=None):
 	allowed_roles = [
 		role
 		for role in get_doctype_roles("Item")
-		if role not in utils.ROLES_ALLOWED and role != workshop
+		if role not in utils.ROLES_ALLOWED and role != f'Administrador {workshop}'
 	]
 
 	if any(role in roles for role in allowed_roles):
 		return False
 
-	if workshop in roles:
+	if f'Administrador {workshop}' in roles:
 
 		stock_entries = frappe.get_all(
 			"Stock Entry Detail",

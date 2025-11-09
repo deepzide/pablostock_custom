@@ -68,8 +68,8 @@ def has_permission(doc, user=None, permission_type=None):
 	if any(role in roles for role in allowed_roles):
 		return True
 
-	if doc.custom_workshop == workshop:
-		return True
+	if f'Administrador {workshop}' in roles:
+		return doc.custom_workshop == workshop
 
 	return False
 
@@ -92,7 +92,7 @@ def get_permission_query_conditions(user=None):
 	if any(role in roles for role in allowed_roles):
 		return None
 
-	if workshop:
+	if f'Administrador {workshop}' in roles:
 		return f"`tabUser`.`custom_workshop` = '{workshop}'"
 
 	return None
