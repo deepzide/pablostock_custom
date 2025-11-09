@@ -51,10 +51,9 @@
    "label": "Sales By Woocomerce"
   }
  ],
- "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-11-05 05:23:14.728034",
+ "modified": "2025-11-09 12:04:22.257990",
  "modified_by": "Administrator",
  "module": "Pablo Stock",
  "name": "Picking Order",
@@ -73,8 +72,6 @@
    "write": 1
   }
  ],
- "row_format": "Dynamic",
- "rows_threshold_for_grid_search": 20,
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
