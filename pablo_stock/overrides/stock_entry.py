@@ -1,30 +1,6 @@
-# Copyright (c) 2025, Frank and contributors
-# For license information, please see license.txt
 import frappe
-from frappe.model.document import Document
 from frappe.permissions import get_doctype_roles
 from pablo_stock.pablo_stock import utils
-
-
-class PickingOrder(Document):
-	def before_insert(self):
-		if self.is_new():
-			self.status = "Pending"
-
-	@frappe.whitelist()
-	def status_in_process(self):
-		self.status = "In Process"
-		self.save()
-
-	@frappe.whitelist()
-	def status_complete(self):
-		self.status = "Completed"
-		self.save()
-
-	@frappe.whitelist()
-	def status_dispatched(self):
-		self.status = "Dispatched"
-		self.save()
 
 
 def has_permission(doc, user=None, permission_type=None):
@@ -37,15 +13,15 @@ def has_permission(doc, user=None, permission_type=None):
 	roles = frappe.get_roles(user)
 	allowed_roles = [
 		role
-		for role in get_doctype_roles("Picking Order")
-		if role not in utils.ROLES_ALLOWED
+		for role in get_doctype_roles("Stock Entry")
+		if role not in utils.ROLES_ALLOWED and role != f'Administrador {workshop}'
 	]
 
 	if any(role in roles for role in allowed_roles):
 		return True
 
-	if doc.workshop == workshop:
-		return True
+	if f'Administrador {workshop}' in roles:
+		return doc.company == workshop
 
 	return False
 
@@ -60,14 +36,14 @@ def get_permission_query_conditions(user=None):
 	roles = frappe.get_roles(user)
 	allowed_roles = [
 		role
-		for role in get_doctype_roles("Picking Order")
-		if role not in utils.ROLES_ALLOWED
+		for role in get_doctype_roles("Stock Entry")
+		if role not in utils.ROLES_ALLOWED and role != f'Administrador {workshop}'
 	]
 
 	if any(role in roles for role in allowed_roles):
 		return None
 
-	if workshop:
-		return f"`tabPicking Order`.`workshop` = '{workshop}'"
+	if f'Administrador {workshop}' in roles:
+		return f"`tabStock Entry`.`company` = '{workshop}'"
 
 	return None

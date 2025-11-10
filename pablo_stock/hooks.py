@@ -27,12 +27,12 @@ app_license = "mit"
 # include js, css files in header of desk.html
 # app_include_css = "/assets/pablo_stock/css/pablo_stock.css"
 app_include_js = [
-    "/assets/pablo_stock/js/stock_entry_custom.js"
+	"/assets/pablo_stock/js/stock_entry_custom.js"
 ]
 doc_events = {
-    "Stock Entry": {
-        "before_submit": "pablo_stock.stock.stock_entry.validate_negative_stock"
-    }
+	"Stock Entry": {
+		"before_submit": "pablo_stock.stock.stock_entry.validate_negative_stock"
+	}
 }
 
 # include js, css files in header of web template
@@ -50,7 +50,7 @@ doc_events = {
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {"User": "overrides/user.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -124,21 +124,30 @@ doc_events = {
 # -----------
 # Permissions evaluated in scripted ways
 
-# permission_query_conditions = {
-# 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
-# }
-#
-# has_permission = {
-# 	"Event": "frappe.desk.doctype.event.event.has_permission",
-# }
+permission_query_conditions = {
+	"Company": "pablo_stock.overrides.company.get_permission_query_conditions",
+	"Picking Order": "pablo_stock.pablo_stock.doctype.picking_order.picking_order.get_permission_query_conditions",
+	"Stock Entry": "pablo_stock.overrides.stock_entry.get_permission_query_conditions",
+	"Item": "pablo_stock.overrides.item.get_permission_query_conditions",
+	"User": "pablo_stock.overrides.user.get_permission_query_conditions"
+}
+
+has_permission = {
+	"Company": "pablo_stock.overrides.company.has_permission",
+	"Picking Order": "pablo_stock.pablo_stock.doctype.picking_order.picking_order.has_permission",
+	"Stock Entry": "pablo_stock.overrides.stock_entry.has_permission",
+	"Item": "pablo_stock.overrides.item.has_permission",
+	"User": "pablo_stock.overrides.user.has_permission"
+}
 
 # DocType Class
 # ---------------
 # Override standard doctype classes
 
-# override_doctype_class = {
-# 	"ToDo": "custom_app.overrides.CustomToDo"
-# }
+override_doctype_class = {
+	"Company": "pablo_stock.overrides.company.CustomCompany",
+	"User": "pablo_stock.overrides.user.CustomUser",
+}
 
 # Document Events
 # ---------------
@@ -176,8 +185,8 @@ doc_events = {
 # Testing
 # -------
 after_migrate = [
-    "pablo_stock.migrate.after_migrate",
-    
+	"pablo_stock.migrate.after_migrate",
+
 ]
 # before_tests = "pablo_stock.install.before_tests"
 
@@ -251,4 +260,3 @@ after_migrate = [
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
-
