@@ -5,3 +5,6 @@ Operations, Operaciones
 Workshop, Taller
 Users can only be created who belong to the workshop {0}, Solo se pueden crear usuarios que pertenezcan al taller {0}
 The roles of administrator and workshop operator were created, as well as the user corresponding to the administrator role, Se crearon los roles de administrador y operario del taller así como el perfil de usuario para administrarlo
+Generate code, Generar código
+Print code, Imprimir código
+You must specify the barcode, Debe especificar el código de barras

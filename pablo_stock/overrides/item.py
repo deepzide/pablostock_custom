@@ -1,4 +1,7 @@
 import frappe
+import random
+import string
+from datetime import datetime
 from frappe.permissions import get_doctype_roles
 from pablo_stock.pablo_stock import utils
 
@@ -75,3 +78,14 @@ def get_permission_query_conditions(user=None):
 		return f"`tabItem`.`name` IN ('{item_list}')"
 
 	return None
+
+
+@frappe.whitelist()
+def generate_random_code():
+	first_random_code = random.randint(1000, 9999)
+	last_random_code = random.randint(1000, 9999)
+	middle_random_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+
+	cur_date = datetime.now()
+
+	return f"PSI-{first_random_code}-{middle_random_code}-{last_random_code}-DI{cur_date.strftime('%m')}{cur_date.strftime('%y')}"
