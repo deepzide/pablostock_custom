@@ -79,11 +79,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
-<<<<<<< HEAD
- "modified": "2025-11-09 12:04:22.257990",
-=======
  "modified": "2025-11-13 16:57:44.696242",
->>>>>>> 45c7838 (delivery item)
  "modified_by": "Administrator",
  "module": "Pablo Stock",
  "name": "Picking Order",
