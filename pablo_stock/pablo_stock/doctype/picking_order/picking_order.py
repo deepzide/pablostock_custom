@@ -1,9 +1,13 @@
 # Copyright (c) 2025, Frank and contributors
 # For license information, please see license.txt
 import frappe
+<<<<<<< HEAD
 from frappe.model.document import Document
 from frappe.permissions import get_doctype_roles
 from pablo_stock.pablo_stock import utils
+=======
+from frappe.model.document import Document , _
+>>>>>>> 45c7838 (delivery item)
 
 
 class PickingOrder(Document):
@@ -23,7 +27,14 @@ class PickingOrder(Document):
 
 	@frappe.whitelist()
 	def status_dispatched(self):
+		if not self.delivery_item :
+			frappe.throw(_("Delivery Item is required."))
+		if not self.carrier :
+			frappe.throw(_("Carrier is required."))
+		if not self.tracking_number :
+			frappe.throw(_("Tracking Number is required."))
 		self.status = "Dispatched"
+<<<<<<< HEAD
 		self.save()
 
 
@@ -71,3 +82,8 @@ def get_permission_query_conditions(user=None):
 		return f"`tabPicking Order`.`workshop` = '{workshop}'"
 
 	return None
+=======
+		self.save()	
+
+	
+>>>>>>> 45c7838 (delivery item)
