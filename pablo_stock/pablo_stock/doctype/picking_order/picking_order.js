@@ -4,8 +4,8 @@
  frappe.ui.form.on("Picking Order", {
  	refresh(frm) {
 create_actions(frm)
+disabled_add_remove_rows(frm, "delivery_item")
  	},
-
  });
 function status_in_process(frm) {
   frm.call("status_in_process").then((r) => {
@@ -37,5 +37,23 @@ function create_actions(frm) {
     status_dispatched(frm)
     });
   }
+}
+frappe.ui.form.on('Items Picking', {
+    item: function(frm, cdt, cdn) {
+       let row = locals[cdt][cdn];
+        let new_row = frm.add_child('delivery_item');
+        new_row.item = row.item; 
+        frm.refresh_field('delivery_item');
+    },
+    before_items_picking_remove: function(frm,cdt,cdn){
+         let deleted_row = locals[cdt][cdn];
+         let deleted_idx = deleted_row.idx;
+        frm.doc.delivery_item = frm.doc.delivery_item.filter(row => row.idx !== deleted_idx);
+        frm.refresh_field("delivery_item");
+    }
+});
+function disabled_add_remove_rows(frm, table_field, value = true) {
+  frm.set_df_property(table_field, "cannot_add_rows", value);
+  frm.set_df_property(table_field, "cannot_delete_rows", value);
 }
 
