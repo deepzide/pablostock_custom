@@ -10,7 +10,10 @@
   "pieces",
   "status",
   "items_picking",
-  "sales_by_woocomerce"
+  "sales_by_woocomerce",
+  "delivery_item",
+  "carrier",
+  "tracking_number"
  ],
  "fields": [
   {
@@ -49,12 +52,34 @@
    "fieldtype": "Check",
    "hidden": 1,
    "label": "Sales By Woocomerce"
+  },
+  {
+   "depends_on": "eval:(doc.status ===\"Completed\"||doc.status ===\"Dispatched\")\r\n",
+   "fieldname": "delivery_item",
+   "fieldtype": "Table",
+   "label": "Delivery Item",
+   "mandatory_depends_on": "eval:(doc.status ===\"Completed\"||doc.status ===\"Dispatched\")\r\n",
+   "options": "Delivery Item"
+  },
+  {
+   "depends_on": "eval:(doc.status ===\"Completed\"||doc.status ===\"Dispatched\")\r\n",
+   "fieldname": "tracking_number",
+   "fieldtype": "Int",
+   "label": "Tracking Number",
+   "mandatory_depends_on": "eval:(doc.status ===\"Completed\"||doc.status ===\"Dispatched\")\r\n"
+  },
+  {
+   "depends_on": "eval:(doc.status ===\"Completed\"||doc.status ===\"Dispatched\")\r\n",
+   "fieldname": "carrier",
+   "fieldtype": "Link",
+   "label": "Carrier",
+   "mandatory_depends_on": "eval:(doc.status ===\"Completed\"||doc.status ===\"Dispatched\")\r\n",
+   "options": "Carrier"
   }
  ],
- "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-11-05 05:23:14.728034",
+ "modified": "2025-11-10 02:26:53.998250",
  "modified_by": "Administrator",
  "module": "Pablo Stock",
  "name": "Picking Order",
@@ -74,7 +99,6 @@
   }
  ],
  "row_format": "Dynamic",
- "rows_threshold_for_grid_search": 20,
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
