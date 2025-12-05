@@ -14,5 +14,9 @@
   {
     "url": "https://github.com/deepzide/customer_poc",
     "branch": "main"
+  },
+  {
+    "url": "https://github.com/deepzide/pablostock_custom",
+    "branch": "main"
   }
 ]
