@@ -11,28 +11,34 @@ import openpyxl
 # -----------------------------------------------------------------------------
 
 def ensure_warehouse_types():
-	"""ERPNext usa Warehouse Type al crear warehouses por defecto al guardar Company."""
+	"""
+	ERPNext crea warehouses por defecto al guardar Company y referencia Warehouse Type (p.ej. Transit).
+	En algunos sitios, el DocType puede tener autoname=Prompt, así que seteamos `name` explícito.
+	"""
 	required = ["Transit"]
 
 	for wt in required:
 		if not frappe.db.exists("Warehouse Type", wt):
-			frappe.get_doc({
+			doc = frappe.get_doc({
 				"doctype": "Warehouse Type",
+				"name": wt,                   # 👈 clave para autoname=Prompt
 				"warehouse_type_name": wt,
-			}).insert(ignore_permissions=True)
+			})
+			doc.insert(ignore_permissions=True)
 
 
 def ensure_uom(uom_name: str) -> str:
 	"""Asegura un UOM existente para Items. Devuelve el name del UOM."""
 	uom_name = (uom_name or "").strip()
 	if not uom_name:
-		return "Nos"
+		uom_name = "Nos"
 
 	if frappe.db.exists("UOM", uom_name):
 		return uom_name
 
 	doc = frappe.get_doc({
 		"doctype": "UOM",
+		"name": uom_name,               # 👈 por si autoname=Prompt
 		"uom_name": uom_name,
 		"enabled": 1,
 	})
@@ -45,14 +51,13 @@ def get_default_stock_uom() -> str:
 	for candidate in ("Nos", "Unit", "Units", "EA"):
 		if frappe.db.exists("UOM", candidate):
 			return candidate
-	# si ninguno existe, crea "Nos"
 	return ensure_uom("Nos")
 
 
 def ensure_root_item_group() -> str:
 	"""
-	En ERPNext, el root suele ser 'All Item Groups'.
-	Si por alguna razón no existe, lo crea.
+	En ERPNext el root suele ser 'All Item Groups'.
+	Si no existe, se crea. Se setea `name` por si el DocType está en Prompt.
 	"""
 	root = "All Item Groups"
 	if frappe.db.exists("Item Group", root):
@@ -60,6 +65,7 @@ def ensure_root_item_group() -> str:
 
 	doc = frappe.get_doc({
 		"doctype": "Item Group",
+		"name": root,                   # 👈 por si autoname=Prompt
 		"item_group_name": root,
 		"is_group": 1,
 	})
@@ -107,7 +113,7 @@ def add_companys():
 		if not name or not abbr:
 			continue
 
-		# idempotente: por nombre y por abbr
+		# Idempotencia
 		if frappe.db.exists("Company", name) or frappe.db.exists("Company", {"abbr": abbr}):
 			continue
 
@@ -136,6 +142,8 @@ def add_brands():
 
 		doc = frappe.get_doc({
 			"doctype": "Brand",
+			# Brand normalmente autoname por field, no hace falta name, pero no molesta:
+			"name": brand,
 			"brand": brand,
 		})
 		doc.insert(ignore_permissions=True)
@@ -154,17 +162,19 @@ def add_item_group():
 		if not item_group_name or frappe.db.exists("Item Group", item_group_name):
 			continue
 
-		item_group = frappe.get_doc({
+		doc = frappe.get_doc({
 			"doctype": "Item Group",
+			"name": item_group_name,       # 👈 por si autoname=Prompt
 			"item_group_name": item_group_name,
 			"parent_item_group": root,
 			"is_group": 0,
 		})
-		item_group.insert(ignore_permissions=True)
+		doc.insert(ignore_permissions=True)
 
 
 def add_items():
 	default_uom = get_default_stock_uom()
+	root_group = ensure_root_item_group()
 
 	sheet, headers_dict = load_items_sheet()
 
@@ -200,35 +210,36 @@ def add_items():
 		if publicado is not None and str(publicado).strip().lower() in ("no", "false", "0"):
 			disabled = 1
 
-		# Item Group: si viene vacío o no existe, cae al root
-		root_group = ensure_root_item_group()
+		# Item Group fallback
 		item_group = str(categoria).strip() if categoria else ""
 		if not item_group or not frappe.db.exists("Item Group", item_group):
 			item_group = root_group
 
 		item = frappe.get_doc({
 			"doctype": "Item",
+			# Item autoname suele ser item_code, pero para evitar Prompt:
+			"name": item_code,
 			"item_code": item_code,
 			"item_name": str(nombre).strip() or item_code,
 			"description": str(descripcion).strip(),
 			"item_group": item_group,
 
-			# Requeridos típicos
+			# Requerido típico
 			"stock_uom": default_uom,
 
-			# Flags de negocio
+			# Flags
 			"disabled": disabled,
 			"is_stock_item": 1,
 			"is_sales_item": 1,
 			"is_purchase_item": 1,
 
-			# Campos custom tuyos
+			# Custom fields
 			"custom_origin": str(origen).strip(),
 			"custom_item_model": str(modelo).strip(),
 			"custom_applies": str(aplica).strip(),
 			"custom_discounted_pr": precio_rebajado,
 
-			# estándar (ojo: standard_rate no siempre se usa en ERPNext stock)
+			# Campos estándar (puede variar por versión/config)
 			"standard_rate": precio_normal,
 
 			"brand": brand_doc,
@@ -237,7 +248,7 @@ def add_items():
 
 
 # -----------------------------------------------------------------------------
-# Roles / Permissions (tu lógica, solo ordenada)
+# Roles / Permissions
 # -----------------------------------------------------------------------------
 
 def grant_permissions(role, items):
@@ -327,7 +338,6 @@ def add_domain():
 def disable_workspaces():
 	modules_to_show = ["Pablo Stock", "Stock"]
 
-	# Ocultar los que no son del módulo
 	to_hide = frappe.get_all(
 		"Workspace",
 		filters={"module": ["not in", modules_to_show], "is_hidden": 0},
@@ -336,7 +346,6 @@ def disable_workspaces():
 	for name in to_hide:
 		frappe.db.set_value("Workspace", name, "is_hidden", 1)
 
-	# Mostrar los del módulo
 	to_show = frappe.get_all(
 		"Workspace",
 		filters={"module": ["in", modules_to_show], "is_hidden": 1},
@@ -345,7 +354,6 @@ def disable_workspaces():
 	for name in to_show:
 		frappe.db.set_value("Workspace", name, "is_hidden", 0)
 
-	# Asegurar Users visible
 	users_ws = frappe.get_all("Workspace", filters={"title": "Users", "is_hidden": 1}, pluck="name")
 	for name in users_ws:
 		frappe.db.set_value("Workspace", name, "is_hidden", 0)
@@ -356,7 +364,7 @@ def disable_workspaces():
 # -----------------------------------------------------------------------------
 
 def after_migrate():
-	# Lo mínimo primero (para que Company no explote)
+	# Seeds mínimos para que Company/Item no reviente por links/naming
 	ensure_warehouse_types()
 	ensure_root_item_group()
 	get_default_stock_uom()
@@ -371,3 +379,4 @@ def after_migrate():
 
 	disable_workspaces()
 	frappe.db.commit()
+
